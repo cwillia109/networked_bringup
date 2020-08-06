@@ -1,0 +1,23 @@
+<launch>
+  <!-- REQUIRED ARGUMENTS -->
+  <arg name="model"               default="$(env TURTLEBOT3_MODEL)"/>
+  <arg name="multi_robot_name"    default=""/>
+  <arg name="set_lidar_frame_id"  default="base_scan"/>
+  <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro'"/>
+
+  <!-- WORKSTATION MACHINE DEFINITION -->
+  <machine name="workstation"     address="192.168.0.100" env-loader="/opt/ros/kinetic/env.sh" user="adam"/>
+
+  <!-- TO BE CALLED ON ROBOT -->
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_robot.launch">
+    <arg name="multi_robot_name"    value="$(arg multi_robot_name)"/>
+    <arg name="set_lidar_frame_id"  value="$(arg set_lidar_frame_id)"/>
+  </include>
+
+  <!-- TO BE CALLED ON WORKSTATION -->
+  <param name="robot_description" command="$(arg urdf_file)"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" machine="workstation">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" value="$(arg multi_robot_name)"/>
+  </node>
+</launch>
