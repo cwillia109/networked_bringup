@@ -5,11 +5,11 @@
   <arg name="set_lidar_frame_id"  default="base_scan"/>
   <arg name="user"		  default="$(env WORKSTATION_USER)" doc="The username of the machine to offload to."/>
   <arg name="address"		  default="$(env WORKSTATION_ADDRESS)"/>
-  <arg name="ros_version"	  default="kinetic"	doc="The version of ros used on the machine to offload to."/>
+  <arg name="target_version"	  default="kinetic"	doc="The version of ros used on the machine to offload to."/>
 
 
   <!-- WORKSTATION MACHINE DEFINITION -->
-  <machine name="workstation"     address="$(arg address)" env-loader="/opt/ros/$(arg ros_version)/env.sh" user="$(arg user)"/>
+  <machine name="workstation"     address="$(arg address)" env-loader="/opt/ros/$(arg target_version)/env.sh" user="$(arg user)"/>
 
   <!-- TO BE CALLED ON ROBOT -->
   <include file="$(find turtlebot3_bringup)/launch/turtlebot3_robot.launch">
